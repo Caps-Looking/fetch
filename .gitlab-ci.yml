@@ -1,7 +1,7 @@
 #include:
 #    template: SAST.gitlab-ci.yml
 
-image: java:11
+image: openjdk:11
 
 cache:
     key: "$CI_COMMIT_REF_NAME"
