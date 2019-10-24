@@ -1,7 +1,7 @@
 #include:
 #    template: SAST.gitlab-ci.yml
 
-image: jhipster/jhipster:v5.3.4
+image: java:8
 
 cache:
     key: "$CI_COMMIT_REF_NAME"
@@ -18,19 +18,12 @@ stages:
 maven-build:
     stage: build
     before_script:
-        - export MAVEN_USER_HOME=`pwd`/.maven
-#        - ./mvnw com.github.eirslett:frontend-maven-plugin:install-node-and-npm -DnodeVersion=v8.11.4 -DnpmVersion=6.4.1 -Dmaven.repo.local=$MAVEN_USER_HOME
-#        - ./mvnw com.github.eirslett:frontend-maven-plugin:npm -Dmaven.repo.local=$MAVEN_USER_HOME
+        - chmod +x mvnw
     script:
-        - ./mvnw compile -Dmaven.repo.local=$MAVEN_USER_HOME
-        - ./mvnw test -Dmaven.repo.local=$MAVEN_USER_HOME
-        - ./mvnw com.github.eirslett:frontend-maven-plugin:npm -Dfrontend.npm.arguments='test -- -u' -Dmaven.repo.local=$MAVEN_USER_HOME
         - ./mvnw verify -Pprod -DskipTests -Dmaven.repo.local=$MAVEN_USER_HOME
     artifacts:
         paths:
-            - target/*.war
-            - target/surefire-reports/*
-            - target/test-results/jest/*
+            - target/*.jar
         # Uncomment following to expire the artifacts after defined period, https://docs.gitlab.com/ee/ci/yaml/README.html#artifacts-expire_in
         expire_in: 90 day
 
